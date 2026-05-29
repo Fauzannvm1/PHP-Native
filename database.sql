@@ -1,0 +1,49 @@
+CREATE DATABASE IF NOT EXISTS kasir_db;
+USE kasir_db;
+
+-- 1. Tabel users
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    nama VARCHAR(100) NOT NULL,
+    role ENUM('admin', 'kasir') DEFAULT 'kasir',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 2. Tabel produk
+CREATE TABLE IF NOT EXISTS produk (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    kode_produk VARCHAR(50) NOT NULL UNIQUE,
+    nama_produk VARCHAR(150) NOT NULL,
+    kategori VARCHAR(50) DEFAULT 'Umum',
+    harga DECIMAL(15, 2) NOT NULL DEFAULT 0,
+    stok INT NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 3. Tabel transaksi
+CREATE TABLE IF NOT EXISTS transaksi (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    no_transaksi VARCHAR(50) NOT NULL UNIQUE,
+    id_user INT NOT NULL,
+    nama_kasir VARCHAR(100) NOT NULL,
+    total DECIMAL(15, 2) NOT NULL DEFAULT 0,
+    bayar DECIMAL(15, 2) NOT NULL DEFAULT 0,
+    kembalian DECIMAL(15, 2) NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_user) REFERENCES users(id) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 4. Tabel detail_transaksi
+CREATE TABLE IF NOT EXISTS detail_transaksi (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_transaksi INT NOT NULL,
+    id_produk INT NOT NULL,
+    nama_produk VARCHAR(150) NOT NULL,
+    harga DECIMAL(15, 2) NOT NULL DEFAULT 0,
+    qty INT NOT NULL DEFAULT 1,
+    subtotal DECIMAL(15, 2) NOT NULL DEFAULT 0,
+    FOREIGN KEY (id_transaksi) REFERENCES transaksi(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_produk) REFERENCES produk(id) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
