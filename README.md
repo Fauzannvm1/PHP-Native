@@ -154,16 +154,6 @@ Relasi utama: `transaksi` → `users`, `detail_transaksi` → `transaksi` & `pro
 
 ---
 
-## Demo / Perkenalan Website
-
-Untuk script presentasi lengkap (bahasa Indonesia, step-by-step), buka:
-
-**[docs/INTRO_SCRIPT.md](docs/INTRO_SCRIPT.md)**
-
-File itu berisi teks yang bisa dibacakan teman Anda saat mendemo dashboard dan semua fitur.
-
----
-
 ## Keamanan (Catatan)
 
 - Password disimpan dengan `password_hash()` / `password_verify()`
